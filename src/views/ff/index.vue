@@ -2,6 +2,7 @@
 <div class="ff">
   <h1>我是ff</h1>
 <router-link to="ww">我要去ww</router-link>
+
   </div>
 </template>
 <script>
