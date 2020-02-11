@@ -6,4 +6,7 @@
 </template>
 
 <style lang="less">
+body {
+  margin: 0px;
+}
 </style>
