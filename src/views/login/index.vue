@@ -1,157 +1,96 @@
 <template>
 <div class="login">
   <h1>我是login</h1>
-  <p><input> </p>
-  <p><input> </p>
-  <p><input type="button" value="登录" @click="loginIn"> </p>
- <daohang :list="ll" ref="daohang" @cc="hh('oo',$event)" :class="{'active1':isActive}"></daohang>
- <daohang :list="ll" v-if="isActive"></daohang>
- <div><button @click="tt">点击我</button></div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  <div>wo shi</div>
-  
+  <div v-if="list.length>0"> 
+ <table border="1" style="width:300px;height:150px;" class="mtable">
+   <thead>
+   <tr>
+     <th>书籍</th>
+     <th>价格</th>
+     <th>数量</th>
+     <th>操作</th>
+   </tr>
+   </thead>
+   <tbody>
+     <tr v-for="(item,index) in list">
+       <td>{{item.book}}</td>
+        <td>{{item.price | toprice}}</td>
+         <td>
+           <button @click="decrease(index)" :disabled="item.num<2">-</button>
+           {{item.num}}
+            <button @click="increase(index)">+</button>
+           </td>
+          <td><button @click="del(index)">删除</button></td>
+     </tr>
+     </tbody>
+    
+   </table>
+    <h1>总价格:{{total | toprice}}</h1>
+    </div>
+    <h1 v-else>购物车清空了</h1>
   </div>
 </template>
 <script>
-import { getList } from '../../api/api'
-import daohang from '@/components/daohang'
 export default {
+  filters: {
+    toprice(cc) {
+      return '￥' + cc.toFixed(2)
+    }
+  },
   name: '',
   props: {},
   data() {
     return {
-      ll: [],
-      isActive: false,
-      scrollTop: '',
-      offsetTop: 0
+      list: [
+        {
+          book: 'wu',
+          price: 10,
+          num: 1
+        },
+        {
+          book: 'fang',
+          price: 20,
+          num: 1
+        },
+        {
+          book: 'yan',
+          price: 30,
+          num: 1
+        }
+      ]
     }
   },
-  components: {
-    daohang
-  },
-  created() {
-    this.ll = ['wu', 'fang', 'yan']
-  },
-  computed: {},
-  mounted() {
-    this.offsetTop = document.querySelector('.daohang').offsetTop
-    window.addEventListener('scroll', this.handleScroll)
-    // console.log(offsetTop, 777)
-  },
+  components: {},
+  created() {},
   computed: {
-    // scrollTop() {
-    //   return this.handleScroll()
-    // }
-  },
-  methods: {
-    loginIn() {
-      getList({ dictGroupCode: 'ENGINEER_CODE' }).then(res => {
-        console.log(res, 111)
+    total() {
+      let regult = 0
+      this.list.forEach(ele => {
+        regult += ele.price * ele.num
       })
+      return regult
+    }
+  },
+  mounted() {},
+
+  beforeDestroy() {},
+  methods: {
+    del(index) {
+      this.list.splice(index, 1)
     },
-    hh(a, b) {
-      console.log(a, b, 55)
+    increase(index) {
+      this.list[index].num += 1
     },
-    tt() {
-      this.isActive = !this.isActive
-      console.log(this.isActive, 888)
-    },
-    handleScroll() {
-      this.scrollTop =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop
-      if (this.scrollTop >= this.offsetTop) {
-        this.isActive = true
-        console.log(this.isActive, 666)
-      } else {
-        this.isActive = false
-      }
+    decrease(index) {
+      this.list[index].num -= 1
     }
   }
 }
 </script>
 <style scoped lang="less">
 .login {
-  h1 {
-    margin: 0px;
-  }
-
-  background: #bfa;
-  text-align: center;
-  .active1 {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    right: 0px;
+  .mtable {
+    text-align: center;
   }
 }
 </style>

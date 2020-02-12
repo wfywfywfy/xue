@@ -2,14 +2,15 @@
   <div class="daohang">
     <div class="list">
 <div v-for="(item,index) in list" :key='index' class="item"
-:class="{active:opan === index? 'isactive':''}"
+:class="{active:opan === index? 'true':''}"
 @click="showColor(index)"
 ><span>{{item}}</span></div>
     </div>
  <div>
- <!-- <div><button @click="tt">点击我</button></div> -->
+ <div><button @click="tt">点击我</button></div>
     <!-- <button @click="cc">按钮</button> -->
    </div>
+  
   </div>
 </template>
 
@@ -23,15 +24,35 @@ export default {
     }
   },
   created() {},
+  mounted() {
+    // window.addEventListener('scroll', this.kk)
+  },
   data() {
     return {
       // list: ['wu', 'fang', 'yan'],
       isactive: false,
       opan: 0,
-      isActive: false
+      isActive: false,
+      isShow: false,
+      scrollTop: 0
     }
   },
   methods: {
+    // rr() {
+    //   console.log(998)
+    //   window.pageYOffset = 0
+    // },
+    // kk() {
+    //   this.scrollTop =
+    //     window.pageYOffset ||
+    //     document.documentElement.scrollTop ||
+    //     document.body.scrollTop
+    //   if (this.scrollTop > 300) {
+    //     this.isShow = true
+    //   } else {
+    //     this.isShow = false
+    //   }
+    // },
     showColor(aa) {
       // console.log(aa, 111)
       this.opan = aa
@@ -40,11 +61,11 @@ export default {
       this.isactive = !this.isactive
       // console.log(this.isactive, 222)
       this.$emit('cc', this.isactive)
+    },
+    tt() {
+      this.isShow = !this.isShow
+      console.log(this.isShow, 888)
     }
-    // tt() {
-    //   this.isActive = !this.isActive
-    //   console.log(this.isActive, 888)
-    // }
   }
 }
 </script>
@@ -77,6 +98,14 @@ export default {
         padding: 10px 5px;
       }
     }
+  }
+  .backtop {
+    height: 30px;
+    width: 30px;
+    background: #999;
+    position: fixed;
+    bottom: 20px;
+    right: 10px;
   }
 }
 </style>
